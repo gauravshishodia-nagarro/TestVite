@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Teshrin-Regular";
+  src: url("/fonts/Teshrin-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Teshrin-Medium";
+  src: url("/fonts/Teshrin-Medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Teshrin-Bold";
+  src: url("/fonts/Teshrin-Bold.woff2") format("woff2");
+}
