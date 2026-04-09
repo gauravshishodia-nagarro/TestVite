@@ -137,7 +137,7 @@ const constants = {
   routesRequiringBackConfirmation: [
     "delivery-information",
     "review-order",
-    "[id]",
+    "review-payment",
   ],
   routesNavigateToHomeOnBack: ["success", "order-confirmed"],
   REFRESH_FLAG: "JOURNEY_REFRESH_ALERT_SHOWN",

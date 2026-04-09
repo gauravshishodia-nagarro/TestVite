@@ -224,6 +224,7 @@
     "viewAll": "عرض الكل",
     "exploreAddons": "اكتشف الإضافات",
     "orderSIM": "اطلب شريحة",
+    "orderESIM": "اطلب شريحة مدمجة",
     "simCardInfo": "معلومات شريحتي",
     "eSIMQRCode": "رمز الاستجابة السريعة (QR) لبطاقة eSIM",
     "smDPAddress": "عنوان SM-DP+ ورمز التفعيل",
@@ -962,7 +963,14 @@
     "chooseEmailBelowOrAdd": "Choose a email address from below list or add a new email address",
     "optional": " (اختياري)",
     "routerColor": "Router Color",
-    "outOfStock": "Out of stock"
+    "outOfStock": "Out of stock",
+    "selectVerifyMethod":"Select any of the methods to verify your identity",
+    "veriyUsingPhone":"Verify using Phone number",
+    "verifyUsingNafath":"Verify using Nafath",
+    "dontHaveNafathApp": "Verify using Nafath. If you don’t have the app, ",
+    "downloadAppStore":"Download from App Store",
+    "downloadPlayStore":"Download from Play Store",
+    "downloadWeb":"Download from Apple store/ Play store"
   },
   "placeholder": {
     "email": "Yaqoot@example.com",

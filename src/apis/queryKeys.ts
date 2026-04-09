@@ -43,4 +43,6 @@ export const queryKeys = {
   mokafaaWalletExists: "mokafaaWalletExists",
   mokafaaDefaultNumber: "mokafaaDefaultNumber",
   mokafaaRules: "mokafaaRules",
+  walletTransactions: 'walletTransactions',
+  walletBalance: 'walletBalance',
 };

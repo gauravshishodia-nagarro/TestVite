@@ -9,9 +9,9 @@ export const useLanguageToggle = () => {
   const navigation = useNavigation();
   const softReset = useSoftResetStore((s) => s.softReset);
 
-  const toggleLanguage = async (fromLangSelection = false) => {
+  const toggleLanguage = async (fromLangSelection = false, selectedLocale: string | null = null) => {
     const currentLocale = i18n.language;
-    const nextLocale = currentLocale === "ar" ? "en" : "ar";
+    const nextLocale = selectedLocale || (currentLocale === "ar" ? "en" : "ar");
     const isRTL = nextLocale === "ar";
 
     useUserPreferenceStore

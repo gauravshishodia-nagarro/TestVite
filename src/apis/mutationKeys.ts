@@ -4,4 +4,6 @@ export const mutationKeys = {
   verifyOTP: "verifyOTP",
   login: "login",
   simOrderPackageInfo: "simOrderPackageInfo",
+  userProfile: "userProfile",
+  packageCart: "packageCart",
 };

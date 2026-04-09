@@ -54,6 +54,7 @@ import { Table } from "./table";
 import { useAppTranslation } from "../hooks/useAppTranslation";
 import { t } from "i18next";
 import { useNavigation } from "@react-navigation/native";
+import { useStepProgressStore } from "../stores/useStepProgressStore";
 
 export const unlimetedApps: string[] = [
   require("../../public/images/telegram.png"),
@@ -287,9 +288,8 @@ const FeatureList: React.FC<FeatureListProps> = React.memo(
     return (
       <View>
         <View
-          className={`bg-secondary-white px-4 pt-4 pb-1 rounded-2xl ${
-            isHomePkg ? "rounded-b-none" : ""
-          }`}
+          className={`bg-secondary-white px-4 pt-4 pb-1 rounded-2xl ${isHomePkg ? "rounded-b-none" : ""
+            }`}
         >
           {banners.map((banner) => {
             return (
@@ -316,9 +316,8 @@ const FeatureList: React.FC<FeatureListProps> = React.memo(
           })}
 
           <CustomText
-            className={`font-primary-bold text-lg text-secondary-gray mb-2 ${
-              Platform.OS === "web" ? "text-start" : "text-left"
-            }`}
+            className={`font-primary-bold text-lg text-secondary-gray mb-2 ${Platform.OS === "web" ? "text-start" : "text-left"
+              }`}
           >
             {t("label.packageFeatures")}
           </CustomText>
@@ -409,9 +408,8 @@ const ProductOptions = () => {
       <>
         <View
           key={item.id}
-          className={`border-[1.5px] w-[90px] h-[114px] rounded-xl me-3 gap-2 p-3 items-center justify-center ${
-            selected ? "border-secondary-blue" : "border-shades-gray-06"
-          } ${isOutOfStock ? "opacity-60" : "opacity-100"}`}
+          className={`border-[1.5px] w-[90px] h-[114px] rounded-xl me-3 gap-2 p-3 items-center justify-center ${selected ? "border-secondary-blue" : "border-shades-gray-06"
+            } ${isOutOfStock ? "opacity-60" : "opacity-100"}`}
         >
           <View className="h-[56px] w-[53px]">
             {/* //TODO image from api */}
@@ -420,9 +418,8 @@ const ProductOptions = () => {
 
           <CustomText
             fontVarient="medium"
-            className={`text-sm text-center ${
-              selected ? "text-secondary-blue" : "text-shades-gray-01"
-            }`}
+            className={`text-sm text-center ${selected ? "text-secondary-blue" : "text-shades-gray-01"
+              }`}
           >
             {item.title}
           </CustomText>
@@ -495,6 +492,7 @@ const PackageDetails: React.FC<PackageDetailsType> = ({
   const { data: packageData } = useGetPackagesQuery();
   const packages = packageData?.packages ?? [];
   const { setActiveSheet } = useBottomSheetStore.getState();
+  const { setTotalSteps } = useStepProgressStore();
   const openBottomSheet = useCallback(
     (key: string, options: BottomSheetOptions) => {
       setActiveSheet(key, options);
@@ -510,7 +508,7 @@ const PackageDetails: React.FC<PackageDetailsType> = ({
       return parsedPackages.filter((item) =>
         simType === SIM_TYPE.ESIM
           ? item.package_for === "esim" ||
-            item.esimPackage?.package_for === "esim"
+          item.esimPackage?.package_for === "esim"
           : item.package_for === "default",
       );
     } else {
@@ -524,11 +522,13 @@ const PackageDetails: React.FC<PackageDetailsType> = ({
       : undefined;
 
   const openConnectWithBottomSheet = useCallback(() => {
+    const isPackageSelected = !!currentSelectedPackage;
+
     if (journeyStartedFrom === "Store") {
       setJourneyState({
         selectedPackage: currentSelectedPackage,
       });
-      navigation.navigate("PersonalInformation", {
+      navigation.navigate("personalInformation", {
         title:
           journeyName === "ORDER_SIM"
             ? simType === SIM_TYPE.ESIM
@@ -541,10 +541,24 @@ const PackageDetails: React.FC<PackageDetailsType> = ({
       setJourneyState({
         selectedPackage: currentSelectedPackage,
         journeyStartedFrom: "Package",
+        journeyName: 'ORDER_SIM',
+        simType: SIM_TYPE.ESIM
       });
-      openBottomSheet("connectWithYaqootSheet", {
-        snapPoints: ["72%", "90%"],
-      });
+
+      setTotalSteps(isPackageSelected ? 4 : 5);
+      if (!isPackageSelected) {
+        navigation.navigate(
+          'packages',
+          { title: t('action.orderSIM') },
+        );
+      } else {
+        navigation.navigate(
+          'personalInformation',
+					{
+            title: t('action.orderESIM')
+          },
+        );
+      }
     }
   }, [
     journeyName,
@@ -721,7 +735,7 @@ const PackageDetails: React.FC<PackageDetailsType> = ({
             isActive
               ? pkgItem.package_logo_image
               : pkgItem.package_logo_image_inactive ||
-                pkgItem.package_logo_image
+              pkgItem.package_logo_image
           }
           onButtonPress={() => setSelectedPackageIndex(index)}
           price={pkgItem?.price.toString()}
@@ -835,7 +849,7 @@ const PackageDetails: React.FC<PackageDetailsType> = ({
           isCollapsible
         >
           {currentSelectedPackage &&
-          getPackageType(currentSelectedPackage) !== PACKAGE_TYPE.HOME_PKG ? (
+            getPackageType(currentSelectedPackage) !== PACKAGE_TYPE.HOME_PKG ? (
             <SectionItem
               leadingIcon="explore"
               label={t("action.exploreAddons")}
@@ -880,7 +894,7 @@ const PackageDetails: React.FC<PackageDetailsType> = ({
               price={
                 simType === SIM_TYPE.ESIM
                   ? selectedPackage?.esimPackage?.price ||
-                    selectedPackage?.price
+                  selectedPackage?.price
                   : selectedPackage?.price
               }
               customTextClassName={`font-primary-bold text-secondary-green text-[24px]`}
@@ -890,9 +904,8 @@ const PackageDetails: React.FC<PackageDetailsType> = ({
               height={24}
             />
             <CustomText
-              className={`font-primary-regular text-sm text-shades-gray-04 ${
-                Platform.OS === "web" ? "text-start" : "text-left"
-              }`}
+              className={`font-primary-regular text-sm text-shades-gray-04 ${Platform.OS === "web" ? "text-start" : "text-left"
+                }`}
             >
               {t("label.vatIncluded")}
             </CustomText>
@@ -972,7 +985,7 @@ const PackageDetails: React.FC<PackageDetailsType> = ({
               />
 
               {currentSelectedPackage &&
-              getPackageType(currentSelectedPackage) ===
+                getPackageType(currentSelectedPackage) ===
                 PACKAGE_TYPE.HOME_PKG ? (
                 <>
                   <ProductOptions />

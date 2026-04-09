@@ -49,6 +49,7 @@ export const endpoints = {
   },
   user: {
     verifyOTP: (userId: string) => `/user/${userId}/verifyOtp`,
+    profile: (userId: string) => `/user/${userId}/profile`,
   },
   authentication: {
     login: "/authentication/login",
@@ -145,6 +146,7 @@ export const endpoints = {
     redeemPoints: "/payment-v2/mokafaa/redeemPoints",
     multilineRenewPay: (groupOrderId: string) =>
       `/payment-v2/payment/guest/orders/groupPay/${groupOrderId}`,
+    addApplePayCard: '/payment-v2/payment/cards/applepay',
   },
   orderManagement: {
     orderCart: (orderID: string) => `/order-management/carts/order/${orderID}`,
@@ -178,4 +180,12 @@ export const endpoints = {
       "/mokafaa-integration-service/api/getDefaultMobileNumber",
     sendReddemOTP: "/mokafaa-integration-service/api/sendOTP",
   },
+  tawakkalna: {
+    validateToken: "/external-connect-service/api/auth/tawakkalna/validateToken"
+  },
+  wallet: {
+		balance: '/wallet-integration-service/wallet/balance',
+		transactions: '/wallet-integration-service/wallet/transactions', //?type=credit&&count=10&&startIndex=0
+		scanVoucher: '/wallet-integration-service/wallet/scan/voucher',
+	},
 };

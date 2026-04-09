@@ -8,6 +8,9 @@ import React, { useEffect, useState } from "react";
 import { Platform, Pressable, View } from "react-native";
 import { useLanguageToggle } from "../hooks/useLanguageToggle";
 import { useNavigation } from "@react-navigation/native";
+import { generateTWKToken } from "../helpers/twkHelper";
+import { useVerifyTWKToken } from "../apis/services/authentication";
+import { useUserPreferenceStore } from "../stores/userPreferencesStore";
 
 type LanguageType = "Arabic" | "English";
 
@@ -35,6 +38,37 @@ const LanguageOptionCard = ({
   const layoutDirection = item?.isRTL ? "flex-row-reverse" : "flex-row";
   const textAlignItems = item?.isRTL ? "items-end" : "items-start";
   const bgColor = selected ? "bg-shades-blue-06" : "bg-secondary-white";
+  // const { userType, theme, updateUserPreferences, isTWKTokenValid } = useUserPreferenceStore();
+
+  // const twkToken = generateTWKToken();
+  // const { mutateAsync: verifyTwkToken } = useVerifyTWKToken(twkToken);
+
+  // useEffect(() => {
+  //     verifyTwkToken({
+  //       full_name: "محمد عبدالعزيز",
+  //       mobile_number: "+966533978938",
+  //       email: "sam070120361@example.com",
+  //       language: "en"
+  //     }).then((res) => {
+  //       console.log("TWK Token verification response", res);
+  //       if(res?.token){
+  //         updateUserPreferences({isTWKTokenValid: true, accessToken: res.token})
+  //       }
+  //       else {
+  //         // Temp to complete the implementation, Add the working bearer token here to test the flow until the TWK token is working from backend 
+  
+  //         // updateUserPreferences({isTWKTokenValid: false, accessToken: null})
+  //         updateUserPreferences({isTWKTokenValid: true, accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiYjVjZTQwMTAtMzAxNy0xMWYxLTgxMDEtODVmZDgwY2QwMDgyIiwibmFtZSI6InJlZmVycnIiLCJpc011bHRpbGluZSI6dHJ1ZX0sImlhdCI6MTc3NTM2OTY5MywiZXhwIjoxNzgwNTUzNjkzfQ.kXhtxjOfymGK2ROhcDb3B8BGkLNxy1NCPIkXGRrmjiU'})
+  //       }
+  //     }).catch((err) => {
+  //       console.log("TWK Token verification failed", err);
+  //               // Temp to complete the implementation, Add the working bearer token here to test the flow until the TWK token is working from backend
+  
+  //       // updateUserPreferences({isTWKTokenValid: false, accessToken: null})
+  //         updateUserPreferences({isTWKTokenValid: true, accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiYjVjZTQwMTAtMzAxNy0xMWYxLTgxMDEtODVmZDgwY2QwMDgyIiwibmFtZSI6InJlZmVycnIiLCJpc011bHRpbGluZSI6dHJ1ZX0sImlhdCI6MTc3NTM2OTY5MywiZXhwIjoxNzgwNTUzNjkzfQ.kXhtxjOfymGK2ROhcDb3B8BGkLNxy1NCPIkXGRrmjiU'})
+  
+  //     });
+  // }, [isTWKTokenValid, verifyTwkToken]);
 
   return (
     <Pressable
@@ -109,7 +143,7 @@ const LanguageSelection: React.FC = () => {
     setNavigationState({ hasCompletedLanguageSelection: true });
 
     if (getCurrentLocale() !== selectedLocale) {
-      await toggleLanguage(true); // reloadAsync is already inside toggleLanguage
+      await toggleLanguage(true, selectedLocale); // reloadAsync is already inside toggleLanguage
       if (Platform.OS === "web") {
         navigation.popToTop();
       }

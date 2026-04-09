@@ -42,6 +42,7 @@ interface UserJourneyState {
   selectedOperator?: OperatorsType;
   msisdntrnasitionType?: MSISDN_TRANSITION_TYPE | undefined;
   journeyStartedFrom?: JourneyStartPoint;
+  requestedMsisdnInOrderDetails?: string;
   deviceDetails?: {
     name?: string;
     sku?: string;
@@ -93,6 +94,7 @@ const initialState: Omit<
   deviceDetails: undefined,
   rescheduleDetails: undefined,
   multilineRenewPackages: undefined,
+  requestedMsisdnInOrderDetails: undefined,
 };
 
 export const userJourneyStore = create<UserJourneyState>()(

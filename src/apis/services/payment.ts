@@ -11,6 +11,8 @@ import {
   PaymentPayload,
   TamamOfferPayload,
   TamamOfferResponse,
+  ApplePayRequest,
+  MakeCardDefaultRequest
 } from "../types/payment";
 
 export const usePayment = () => {
@@ -94,4 +96,27 @@ export const useMultilineRenewPaymentMutation = () => {
       url: endpoints.payment.multilineRenewPay(groupOrderId),
     }),
   });
+};
+
+export const useAddApplePayCardMutation = () => {
+	const { childToken } = userJourneyStore.getState();
+
+	return useApiMutation<CardResponse, ApplePayRequest>({
+		apiConfig: {
+			method: 'POST',
+			url: endpoints.payment.addApplePayCard,
+			headers: {
+				...(childToken && { Authorization: `Bearer ${childToken}` }),
+			},
+		},
+	});
+};
+
+export const useSetCardDefaultMutation = () => {
+	return useApiMutation<CardResponse, MakeCardDefaultRequest>({
+		apiConfig: {
+			method: 'PUT',
+			url: endpoints.payment.cards,
+		},
+	});
 };

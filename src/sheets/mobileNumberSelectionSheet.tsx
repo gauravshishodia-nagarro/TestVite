@@ -35,6 +35,7 @@ const MobileNumberSelectionSheet: React.FC = () => {
 
   const [selectedVal, setSelectedVal] = useState(initialNumber);
   const { updateActiveSheetProps } = useBottomSheetStore.getState();
+  console.log("numbers", numbers);
 
   return (
     <View

@@ -7,6 +7,17 @@ import { ClickOutsideProvider } from "react-native-click-outside";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PortalProvider } from "@tamagui/portal";
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from "react-native-reanimated";
+import { GlobalOverlay } from "./src/pages/overlay/GlobalOverlay";
+import { generateTWKToken, useAutoLogin } from "./src/helpers/twkHelper";
+
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.error,
+  strict: false,
+});
 
 const queryClient = new QueryClient();
 
@@ -25,13 +36,17 @@ const linking = {
 };
 
 export default function App() {
+  const { accessToken, isTWKTokenValid } = useUserPreferenceStore();
   React.useEffect(() => {
+    if(!accessToken){
     useUserPreferenceStore.getState().updateUserPreferences({
       userType: "GUEST",
     });
-  }, []);
+  }
+  }, [accessToken]);
 
   return (
+    <>
     <NavigationContainer linking={linking}>
       <GestureHandlerRootView>
         <ClickOutsideProvider>
@@ -43,5 +58,7 @@ export default function App() {
         </ClickOutsideProvider>
       </GestureHandlerRootView>
     </NavigationContainer>
+    <GlobalOverlay visible={!isTWKTokenValid || !accessToken} />
+    </>
   );
 }

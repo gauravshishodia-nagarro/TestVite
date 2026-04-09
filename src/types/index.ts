@@ -220,3 +220,24 @@ export enum PAYMENT_INSTALLMENT_METHOD {
   TAMARA = "TAMARA",
   EMKAN = "EMKAN",
 }
+export interface APayPaymentSummaryItemType {
+  label: string
+  amount: string
+}
+export interface APayRequestDataType {
+  merchantIdentifier: string
+  supportedNetworks: APayAllowedCardNetworkType[]
+  countryCode: string
+  currencyCode: string
+  paymentSummaryItems: APayPaymentSummaryItemType[]
+}
+
+export type APayAllowedCardNetworkType = "amex" | "mastercard"| "visa" | "privatelabel" | "chinaunionpay" | "interac" | "jcb" | "suica" | "cartebancaires" | "idcredit" | "quicpay" | "maestro"
+
+type APayAllowedCardNetworkTypeExtended = APayAllowedCardNetworkType | 'mada';
+export type APayRequestDataTypeExtended = Omit<
+	APayRequestDataType,
+	'supportedNetworks'
+> & {
+	supportedNetworks: APayAllowedCardNetworkTypeExtended[];
+};

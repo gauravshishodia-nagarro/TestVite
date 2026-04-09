@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { StackActions, useNavigation } from "@react-navigation/native";
 import { useUserModeQuery } from "../../apis/services/dashboard";
 import {
   parsePackagesList,
@@ -42,16 +42,21 @@ import {
   TOP_BANNER_USER_MODE,
 } from "../../types";
 import { isRTL } from "../../utils/formatter";
-import { checkSimatiError, closeSheetModal } from "../../utils/util";
+import { checkSimatiError, closeSheetModal, decodeJWT } from "../../utils/util";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
+  InteractionManager,
   Pressable,
   RefreshControl,
   View,
 } from "react-native";
+import { useStepProgressStore } from "../../stores/useStepProgressStore";
+import { generateTWKToken } from "../../helpers/twkHelper";
+import { useVerifyTWKToken } from "../../apis/services/authentication";
+import { useProfile } from "../../apis/services/user";
 
 interface AdOnsType {
   title: string;
@@ -225,9 +230,9 @@ const CustomCarouselListSection = <T extends Record<string, any>>({
               //TODO: stack required
               itemKey === "devices"
                 ? navigation.navigate("DeviceDetails", {
-                    sku: item?.sku,
-                    name: item.title,
-                  })
+                  sku: item?.sku,
+                  name: item.title,
+                })
                 : undefined;
             }}
           >
@@ -290,6 +295,8 @@ const WelcomeSection = () => {
   const setActiveSheet = useBottomSheetStore((state) => state.setActiveSheet);
   const { setJourneyState, resetJourneyState } = userJourneyStore();
   const { t } = useAppTranslation();
+  const navigation = useNavigation();
+  const { setTotalSteps } = useStepProgressStore();
 
   const handleStartSimOrder = () => {
     resetJourneyState();
@@ -311,6 +318,28 @@ const WelcomeSection = () => {
       snapPoints: ["85%"],
     });
   };
+
+  const goToEsimOrder = () => {
+    closeSheetModal();
+    setTotalSteps(5);
+    setJourneyState({
+      journeyName: "ORDER_SIM",
+      simType: SIM_TYPE.ESIM,
+    });
+
+    InteractionManager.runAfterInteractions(() => {
+      // if (!isPackageSelected) {
+      navigation.navigate("packages", {
+        title: t("label.orderESIM"),
+      });
+      // } else {
+      //TODO: create stack
+      // navigation.navigate("personalInformation", {
+      //   title: t("label.orderESIM"),
+      // });
+      // }
+    });
+  }
   return (
     <Section label={t("label.welcomeToYaqoot")} containerClassName="gap-4">
       <View className="gap-4">
@@ -320,14 +349,14 @@ const WelcomeSection = () => {
               iconWidth={40}
               iconHeight={40}
               leadingIcon={require("../../../public/images/order-sim-store.webp")}
-              label={t("action.orderSIM")}
+              label={t("action.orderESIM")}
               labelClassName={`font-primary-medium text-sm `}
               containerClassName="flex-col !items-start justify-center !py-3"
-              onPress={handleStartSimOrder}
+              onPress={goToEsimOrder}
               showFallabackArrow={false}
             />
           </View>
-          <View className="border border-shades-purple-06 rounded-xl px-3 flex-1">
+          {/* <View className="border border-shades-purple-06 rounded-xl px-3 flex-1">
             <SectionItem
               iconHeight={40}
               iconWidth={40}
@@ -338,7 +367,7 @@ const WelcomeSection = () => {
               onPress={handleSwtichNumber}
               showFallabackArrow={false}
             />
-          </View>
+          </View> */}
         </View>
         <View className="flex-row items-center border border-shades-border-02 rounded-xl px-1 py-1 gap-1">
           <View className="items-center justify-center">
@@ -513,7 +542,7 @@ const StoreScreen = () => {
   const { data: packages } = useGetPackagesQuery();
   const { data: deviceListData, isLoading: isDeviceLoading } =
     useDeviceListQuery();
-  const { userType, theme } = useUserPreferenceStore();
+  const { userType, theme, updateUserPreferences, isTWKTokenValid } = useUserPreferenceStore();
   const {
     userTypes,
     collapsableHeaderHeight,
@@ -529,10 +558,13 @@ const StoreScreen = () => {
 
   const { setJourneyState } = userJourneyStore();
   const { t } = useAppTranslation();
+  const twkToken = generateTWKToken();
+  const { mutateAsync: verifyTwkToken } = useVerifyTWKToken(twkToken);
 
   const navigation = useNavigation();
 
   const { data: userModeData, refetch: refetchUserMode } = useUserModeQuery();
+  const {mutateAsync: fetchProfle,  data: userProfileData} = useProfile();
   const actions = userModeData?.actions ?? [];
 
   const headerTranslateY = scrollY.interpolate({
@@ -607,6 +639,42 @@ const StoreScreen = () => {
     }
   };
 
+  // useEffect(()=>{
+  //     verifyTwkToken({
+  //       full_name: "محمد عبدالعزيز",
+  //       mobile_number: "+966533978938",
+  //       email: "sam070120361@example.com",
+  //       language: "en"
+  //     }).then((res) => {
+  //       console.log("TWK Token verification response", res);
+  //       if(res?.token){
+  //         updateUserPreferences({isTWKTokenValid: true, accessToken: res.token})
+  //         refetchUserMode();
+  //         const decoded = decodeJWT(res.token);
+  //         console.log("Decoded TWK Token", decoded);
+  //         if(decoded?.user?.id){
+  //         fetchProfle({userId: decoded?.user?.id}).then((res) => {
+  //           updateUserPreferences({userId: decoded?.user?.id, name: res?.name, emailId: res?.emailId, phoneNumber: res?.phoneNo})
+  //           console.log("User profile data", res);
+  //         })
+  //         }
+  //       }
+  //       else {
+  //         // Temp to complete the implementation, Add the working bearer token here to test the flow until the TWK token is working from backend 
+  
+  //         // updateUserPreferences({isTWKTokenValid: false, accessToken: null})
+  //         updateUserPreferences({isTWKTokenValid: true, accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiYjVjZTQwMTAtMzAxNy0xMWYxLTgxMDEtODVmZDgwY2QwMDgyIiwibmFtZSI6InJlZmVycnIiLCJpc011bHRpbGluZSI6dHJ1ZX0sImlhdCI6MTc3NTM2OTY5MywiZXhwIjoxNzgwNTUzNjkzfQ.kXhtxjOfymGK2ROhcDb3B8BGkLNxy1NCPIkXGRrmjiU'})
+  //       }
+  //     }).catch((err) => {
+  //       console.log("TWK Token verification failed", err);
+  //               // Temp to complete the implementation, Add the working bearer token here to test the flow until the TWK token is working from backend
+  
+  //       // updateUserPreferences({isTWKTokenValid: false, accessToken: null})
+  //         updateUserPreferences({isTWKTokenValid: true, accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiYjVjZTQwMTAtMzAxNy0xMWYxLTgxMDEtODVmZDgwY2QwMDgyIiwibmFtZSI6InJlZmVycnIiLCJpc011bHRpbGluZSI6dHJ1ZX0sImlhdCI6MTc3NTM2OTY5MywiZXhwIjoxNzgwNTUzNjkzfQ.kXhtxjOfymGK2ROhcDb3B8BGkLNxy1NCPIkXGRrmjiU'})
+  
+  //     });
+  // }, [isTWKTokenValid, verifyTwkToken])
+
   const onTrackPress = () => {
     //TODO: stack required
     navigation.navigate("MyOrders");
@@ -627,7 +695,7 @@ const StoreScreen = () => {
     }
     const sku =
       userModeData?.userMode?.firstPackageStatus ===
-      FIRST_PACKAGE_STATUS.PENDING
+        FIRST_PACKAGE_STATUS.PENDING
         ? userModeData?.userMode?.firstPackageSku
         : "";
     const selectedPackage = parsePackagesList(packages?.packages || []).find(
@@ -681,7 +749,7 @@ const StoreScreen = () => {
 
     const sku =
       userModeData?.userMode?.firstPackageStatus ===
-      FIRST_PACKAGE_STATUS.PENDING
+        FIRST_PACKAGE_STATUS.PENDING
         ? userModeData?.userMode?.firstPackageSku
         : "";
     const selectedPackage = parsePackagesList(packages?.packages || []).find(
@@ -704,7 +772,7 @@ const StoreScreen = () => {
       navigation.navigate("InformationMismatch", {
         title:
           userModeData?.orderJourney?.orderType ===
-          ONBOARDING_JOURNEY_TYPES.ESIM
+            ONBOARDING_JOURNEY_TYPES.ESIM
             ? t("label.activateESIM")
             : t("common.activateSIM"),
         type: userModeData?.orderJourney?.userMnpStatus?.simatiErrorCode,
@@ -726,7 +794,7 @@ const StoreScreen = () => {
   const handlePaymentPending = () => {
     const sku =
       userModeData?.userMode?.firstPackageStatus ===
-      FIRST_PACKAGE_STATUS.PENDING
+        FIRST_PACKAGE_STATUS.PENDING
         ? userModeData?.userMode?.firstPackageSku
         : "";
     // For eSIM: Save both msisdn and simType in the journey store.
@@ -749,13 +817,13 @@ const StoreScreen = () => {
       }),
       simType,
     });
-    //TODO: stack required
-    navigation.navigate("Payment", {
-      id: sku || "",
-      type: paymentFor.orderSIM,
-      title:
-        simType === SIM_TYPE.ESIM ? t("label.orderESIM") : t("action.orderSIM"),
-    });
+    navigation.dispatch(
+              StackActions.replace('reviewPayment', {
+                id: sku || "",
+                type: paymentFor.orderSIM,
+                title: t("label.orderESIM")
+              })
+            );
   };
   const renderItem = (item: ListItemType) => {
     const itemInfo = fetchData(item.key);
@@ -817,7 +885,7 @@ const StoreScreen = () => {
             onActivatePress={onActivatePress}
             simType={
               userModeData?.orderJourney?.orderType ===
-              ONBOARDING_JOURNEY_TYPES.NEW_SIM
+                ONBOARDING_JOURNEY_TYPES.NEW_SIM
                 ? SIM_TYPE.PHYSICAL
                 : SIM_TYPE.ESIM
             }

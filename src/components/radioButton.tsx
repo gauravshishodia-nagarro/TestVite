@@ -77,7 +77,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
           <View
             className={`items-center justify-center w-[40px] h-[40px] rounded-lg bg-shades-purple-06 ${leadingIconViewClassName}`}
           >
-            {isLeadingIconSVG ? (
+            {/* {isLeadingIconSVG ? (
               <SVGIcon
                 name={leadingIcon}
                 width={leadingIconWidth}
@@ -87,14 +87,14 @@ const RadioButton: React.FC<RadioButtonProps> = ({
                   `0 0 ${leadingIconWidth} ${leadingIconHeight}`
                 }
               />
-            ) : (
+            ) : ( */}
               <GenericImage
                 uri={leadingIcon}
                 width={`w-[${leadingIconWidth}px]`}
                 height={`h-[${leadingIconHeight}px]`}
                 resizeMode="contain"
               />
-            )}
+            {/* )} */}
           </View>
         )}
         {label && (

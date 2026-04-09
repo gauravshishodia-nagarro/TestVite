@@ -4,7 +4,7 @@ import { Platform } from "react-native";
 import { showGlobalError } from "../helpers/globalError";
 import i18n from "../utils/i18n";
 
-export const UAT_BASE_URL = "https://uatokd.maanaginx.com";
+export const UAT_BASE_URL = process.env.EXPO_PUBLIC_UAT_BASE_URL ?? "https://uatokd.maanaginx.com";
 export interface ApiResponse<T> {
   responseCode?: number;
   message?: string;
@@ -119,7 +119,7 @@ export const request = async <T>(requestData: RequestType): Promise<T> => {
         error?.response?.data?.message ||
         error.message ||
         "Something went wrong",
-      data: error?.response.data.data,
+      data: error?.response?.data?.data,
       responseCode: error?.response?.data?.responseCode,
     } as ApiError<T>;
   }

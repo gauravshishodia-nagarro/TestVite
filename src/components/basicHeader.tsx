@@ -167,7 +167,7 @@ const BasicHeader: React.FC<BasicHeaderProps> = ({
   const navigateToHome = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: "Tabs" }],
+      routes: [{ name: "tabs" }],
     });
   };
 

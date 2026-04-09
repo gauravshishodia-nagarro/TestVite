@@ -59,6 +59,7 @@ type SectionItemProps = {
   subLabelClassName?: string;
   sublabelVariant?: "regular" | "medium" | "bold";
   bodyComponent?: ReactNode;
+  controlledCommit?: boolean;
 };
 
 const ArrowIcon = () => (
@@ -94,6 +95,7 @@ const SectionItem: FC<SectionItemProps> = ({
   subLabelClassName,
   sublabelVariant = "regular",
   bodyComponent,
+  controlledCommit = false,
 }) => {
   const isLeadingIconSVG =
     typeof leadingIcon === "string" && !leadingIcon?.includes("/");
@@ -105,7 +107,7 @@ const SectionItem: FC<SectionItemProps> = ({
     // Priority 2: if switch is enabled
     if (trailingSwitch !== undefined && onTrailingSwitchPress !== undefined) {
       return (
-        <GenericSwitch value={!!isSwitchOn} onChange={onTrailingSwitchPress} />
+        <GenericSwitch value={!!isSwitchOn} onChange={onTrailingSwitchPress} controlledCommit={controlledCommit} />
       );
     }
 

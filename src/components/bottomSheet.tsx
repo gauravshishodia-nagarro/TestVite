@@ -12,7 +12,9 @@ const CustomBottomSheet: React.FC = () => {
   const { theme } = useUserPreferenceStore();
   const { setActiveSheet, activeSheet, bottomSheetOptions } =
     useBottomSheetStore();
-  const sheetContent = activeSheet ? bottomSheets[activeSheet] : null;
+  // const sheetContent = activeSheet ? bottomSheets[activeSheet] : null;
+  const SheetComponent = activeSheet ? bottomSheets[activeSheet] : null;
+  const sheetContent = SheetComponent ? <SheetComponent /> : null;
   const bottomSheetRef = useRef<BottomSheet | null>(null);
 
   const renderBackdrop = useCallback(
@@ -39,6 +41,8 @@ const CustomBottomSheet: React.FC = () => {
       ),
     [activeSheet],
   );
+  console.log("ACTIVE SHEET:", activeSheet)
+console.log("OPTIONS:", bottomSheetOptions)
 
   useEffect(() => {
     if (activeSheet) {
@@ -71,14 +75,14 @@ const CustomBottomSheet: React.FC = () => {
         bottomSheetOptions.enableBlurKeyboardOnGesture
       }
     >
-      <BottomSheetView>
+      <BottomSheetView style={{flex:1}}>
         <SheetHeader
           title={bottomSheetOptions.title}
           onBackPress={bottomSheetOptions.onBackPress}
           showBack={bottomSheetOptions.showBack}
         />
         {sheetContent}
-      </BottomSheetView>
+      </BottomSheetView >
     </BottomSheet>
   );
 };

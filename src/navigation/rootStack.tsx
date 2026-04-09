@@ -7,12 +7,17 @@ import LanguageSelection from "../pages/languageSelection";
 import { useUserNavigationStore } from "../stores/userNavigationStore";
 import CustomBottomSheet from "../components/bottomSheet";
 import Packages from "../pages/store/packages";
+import PersonalInformation from "../pages/store/personal-information";
 import BasicHeader from "../components/basicHeader";
 import { useUserPreferenceStore } from "../stores/userPreferencesStore";
 import constants from "../configs/constants";
 import { formatPhone } from "../utils/formatter";
 import CustomText from "../components/customText";
+import ReviewOrder from "../pages/store/review-order";
+import ReviewPayment from "../pages/payment/review-payment";
+import ThreeDSecureView from "../pages/payment/three-d-secure";
 import { useAppTranslation } from "../hooks/useAppTranslation";
+import { generateTWKToken, useAutoLogin } from "../helpers/twkHelper";
 
 const Stack = createNativeStackNavigator();
 
@@ -80,7 +85,7 @@ const headerMap: Record<
   success: {
     titleKey: "",
   },
-  "personal-information": {
+  "personalInformation": {
     titleKey: "action.orderSIM",
   },
   nafathVerification: {
@@ -90,6 +95,9 @@ const headerMap: Record<
     titleKey: "label.deliveryInformation",
   },
   reviewOrder: {
+    titleKey: "title",
+  },
+  reviewPayment: {
     titleKey: "title",
   },
   nationalAddress: {
@@ -230,6 +238,17 @@ export const ShowHeader = ({
 };
 
 export default function RootStack() {
+  const { login } = useAutoLogin();
+
+  React.useEffect(() => {
+    login(generateTWKToken(), {
+      full_name: 'Tawakkalna User',
+      mobile_number: '+966533978933',
+      email: 'sdfjhsfkjsdhfkhdskfjk@sksk.com',
+      language: 'en',
+    });
+  }, []);
+
   const { hasCompletedLanguageSelection } = useUserNavigationStore();
   const initialRouteName = hasCompletedLanguageSelection
     ? "tabs"
@@ -270,8 +289,53 @@ export default function RootStack() {
           })}
         />
         <Stack.Screen
+          name={"personalInformation"}
+          component={PersonalInformation}
+          options={({ route }) => ({
+            headerShown: true,
+            header: () => (
+              <ShowHeader
+                routeName={route.name}
+                titleFromParams={route.params?.title}
+              />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name={"reviewOrder"}
+          component={ReviewOrder}
+          options={({ route }) => ({
+            headerShown: true,
+            header: () => (
+              <ShowHeader
+                routeName={route.name}
+                titleFromParams={route.params?.title}
+              />
+            ),
+          })}
+          />
+          <Stack.Screen
+          name={"reviewPayment"}
+          component={ReviewPayment}
+          options={({ route }) => ({
+            headerShown: true,
+            header: () => (
+              <ShowHeader
+                routeName={route.name}
+                titleFromParams={route.params?.title}
+              />
+            ),
+          })}
+          />
+        <Stack.Screen
           name={"languageSelection"}
           component={LanguageSelection}
+        />
+      <Stack.Screen
+          name={"threeDSecureView"}
+          component={ThreeDSecureView}
+          options={{ headerShown: false }}
+
         />
       </Stack.Navigator>
       <CustomBottomSheet />

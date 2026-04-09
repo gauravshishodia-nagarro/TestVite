@@ -9,22 +9,24 @@ type ApplePayRequestData = {
   type: string;
 };
 export interface PaymentPayload {
-  email?: string;
-  orderId?: string; // it is optional for multiline renewal
-  paymentOptionFlag?: string; // its free for FREE payment
-  // The below params is required at the time of actual payment
-  cardId?: string;
-  cvv?: string;
-  orderType?: string;
-  signature?: string;
-  applePayPayload?: ApplePayRequestData;
-  payForNextRenewal?: boolean;
-  // for bnpl
-  national_id?: string;
-  // multiline renew
-  source?: string;
-  groupOrderId?: string;
-  linkId?: string;
+	email?: string;
+	orderId?: string; // it is optional for multiline renewal
+	paymentOptionFlag?: string; // its free for FREE payment
+	// The below params is required at the time of actual payment
+	cardId?: string;
+	cvv?: string;
+	orderType?: string;
+	signature?: string;
+	applePayPayload?: ApplePayRequestData;
+	payForNextRenewal?: boolean;
+	// for bnpl
+	national_id?: string;
+	// multiline renew
+	source?: string;
+	groupOrderId?: string;
+	linkId?: string;
+	//auto renew subscription
+	payForAutoRenewal?: boolean;
 }
 export interface PaymentCardsResponse {
   cards: CardResponse[];
@@ -86,4 +88,23 @@ export interface TamamOfferResponse {
   tenure: number;
   apr: number;
   total_value: number;
+}
+export interface MakeCardDefaultRequest {
+	id: string;
+}
+
+export interface ApplePayPayload {
+	data: string;
+	signature: string;
+	transactionId: string;
+	ephemeralPublicKey: string;
+	publicKeyHash: string;
+	displayName: string;
+	network: string;
+	type: string;
+}
+
+export interface ApplePayRequest {
+	applePayPayload: ApplePayPayload;
+	isApplePay: boolean;
 }

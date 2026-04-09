@@ -204,6 +204,7 @@ export const Colors = {
   light: {
     primaryRuby: "#8B2828",
     primaryCreem: "#DBD7CF",
+    primaryYellow: '#FD930F',
     secondaryRuby: "#AD3131",
     secondaryPurple: "#3C2D54",
     secondaryYellow: "#EEA641",
@@ -267,6 +268,7 @@ export const Colors = {
   dark: {
     primaryRuby: "#8B2828",
     primaryCreem: "#DBD7CF",
+    primaryYellow: '#FD930F',
     secondaryRuby: "#AD3131",
     secondaryPurple: "#3C2D54",
     secondaryYellow: "#EEA641",

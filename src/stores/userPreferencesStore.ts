@@ -28,6 +28,7 @@ interface UserPreferenceState {
   userType?: UserType | null;
   resetUserPreferences: () => void;
   isMultilineLogin: boolean;
+  isTWKTokenValid: boolean;
 }
 
 const initialState: Omit<
@@ -46,6 +47,7 @@ const initialState: Omit<
   accessToken: null,
   userType: null,
   isMultilineLogin: false,
+  isTWKTokenValid: false,
 };
 
 export const useUserPreferenceStore = create<UserPreferenceState>()(
@@ -65,6 +67,7 @@ export const useUserPreferenceStore = create<UserPreferenceState>()(
             accessToken: null,
             userType: null,
             isMultilineLogin: false,
+            isTWKTokenValid: false,
           }),
       }),
       {

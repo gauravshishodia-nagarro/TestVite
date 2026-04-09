@@ -3,12 +3,16 @@ import {
   NavigationContainerRef,
 } from "@react-navigation/native";
 import { OrderJourney } from "../apis/types/dashboard";
-import { MSISDN_TRANSITION_TYPE, SEMATI_ERROR_CODES } from "../types";
+import { MSISDN_TRANSITION_TYPE, SEMATI_ERROR_CODES, SIM_TYPE } from "../types";
 import { InteractionManager } from "react-native";
 import { useBottomSheetStore } from "../stores/useBottomSheetStore";
 import { useUserPreferenceStore } from "../stores/userPreferencesStore";
 import { queryKeys } from "../apis/queryKeys";
 import { QueryClient } from "@tanstack/react-query";
+import { PackageType } from '../apis/types/store';
+import { packageType } from '../components/packageDetails';
+import { userJourneyStore } from '../stores/userJourneyStore';
+import { AccountResponse } from '../apis/types/user';
 
 export const checkSimatiError = (orderJourney?: OrderJourney) => {
   const isMobileAlreadyExistsCase =
@@ -67,4 +71,68 @@ export const refetchMultiLine = (queryClient: QueryClient) => {
     });
     queryClient.setQueryData([queryKeys.multilinetokens], undefined);
   }
+};
+
+export const getPackageSKU = (
+	simType?: string,
+	selectedPackage?: PackageType,
+) => {
+	const SIM = simType || userJourneyStore.getState().simType;
+	const _package =
+		selectedPackage || userJourneyStore.getState().selectedPackage;
+
+	const sku =
+		SIM === SIM_TYPE.ESIM
+			? _package?.esimPackage?.sku || ''
+			: _package?.sku || '';
+
+	return sku;
+};
+
+export const replaceTelcoTokenWithChild = () => {
+	const { updateUserPreferences } = useUserPreferenceStore.getState();
+
+	const { childToken, childUserId, setJourneyState } =
+		userJourneyStore.getState();
+
+	if (childToken && childUserId) {
+		updateUserPreferences({
+			userId: childUserId,
+			accessToken: childToken,
+		});
+		setJourneyState({
+			childToken: undefined,
+			childUserId: undefined,
+		});
+	}
+};
+
+export const switchToNewLine = (queryClient: QueryClient) => {
+	const { isMultilineLogin } = useUserPreferenceStore.getState();
+	const { selectedNumber, simType, childUserId, selectedPackage } =
+		userJourneyStore.getState();
+
+	if (isMultilineLogin) {
+		replaceTelcoTokenWithChild();
+
+		const newLine: AccountResponse = {
+			id: childUserId || '',
+			msisdn: selectedNumber?.msisdn || '',
+			subscriberStatus: 'New',
+			subscriptionType: packageType(selectedPackage),
+			simType: simType === SIM_TYPE.PHYSICAL ? 'SIM' : 'ESIM',
+		};
+		queryClient.setQueryData(
+			[queryKeys.multilineAccounts],
+			(oldData: AccountResponse[] = []) => {
+				return [...oldData, newLine];
+			},
+		);
+	}
+};
+
+export const decodeJWT = (token: string) => {
+  const payload = token.split('.')[1];
+  const decoded = JSON.parse(atob(payload));
+  return decoded;
 };

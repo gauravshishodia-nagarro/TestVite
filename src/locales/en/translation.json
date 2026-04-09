@@ -225,6 +225,7 @@
     "termsConditions2": "Terms and Conditions",
     "switchNumber": "Switch Number",
     "orderSIM": "Order SIM",
+    "orderESIM": "Order eSIM",
     "exploreAddons": "Explore add-ons",
     "transferYaqoot": "Transfer to Yaqoot",
     "activate": "Activate",
@@ -1000,7 +1001,14 @@
     "chooseEmailOrAdd": "Choose email address from list or add a new one",
     "chooseEmailBelowOrAdd": "Choose a email address from below list or add a new email address",
     "routerColor": "Router Color",
-    "outOfStock": "Out of stock"
+    "outOfStock": "Out of stock",
+    "selectVerifyMethod":"Select any of the methods to verify your identity",
+    "veriyUsingPhone":"Verify using Phone number",
+    "verifyUsingNafath":"Verify using Nafath",
+    "dontHaveNafathApp": "Verify using Nafath. If you don’t have the app, ",
+    "downloadAppStore":"Download from App Store",
+    "downloadPlayStore":"Download from Play Store",
+    "downloadWeb":"Download from Apple store/ Play store"
   },
   "placeholder": {
     "email": "Yaqoot@example.com",
