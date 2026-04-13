@@ -15,6 +15,7 @@ import { formatPhone } from "../utils/formatter";
 import CustomText from "../components/customText";
 import ReviewOrder from "../pages/store/review-order";
 import ReviewPayment from "../pages/payment/review-payment";
+import SuccessScreen from "../pages/payment/success";
 import ThreeDSecureView from "../pages/payment/three-d-secure";
 import { useAppTranslation } from "../hooks/useAppTranslation";
 import { generateTWKToken, useAutoLogin } from "../helpers/twkHelper";
@@ -243,8 +244,8 @@ export default function RootStack() {
   React.useEffect(() => {
     login(generateTWKToken(), {
       full_name: 'Tawakkalna User',
-      mobile_number: '+966533978933',
-      email: 'sdfjhsfkjsdhfkhdskfjk@sksk.com',
+      mobile_number: '+966533978910',
+      email: 'fjrjfnsoapnmalammLJNNN@sksk.com',
       language: 'en',
     });
   }, []);
@@ -332,10 +333,17 @@ export default function RootStack() {
           component={LanguageSelection}
         />
       <Stack.Screen
+          name={"SuccessScreen"}
+          component={SuccessScreen}
+          options={{
+            headerShown: true,
+            header: () => <ShowHeader routeName="success" />,
+          }}
+        />
+      <Stack.Screen
           name={"threeDSecureView"}
           component={ThreeDSecureView}
           options={{ headerShown: false }}
-
         />
       </Stack.Navigator>
       <CustomBottomSheet />

@@ -1,5 +1,6 @@
 import { StackActions, useNavigation } from "@react-navigation/native";
 import { useUserModeQuery } from "../../apis/services/dashboard";
+import { usePackageCartMutation } from "../../apis/services/telcoProvision";
 import {
   parsePackagesList,
   useDeviceListQuery,
@@ -557,6 +558,7 @@ const StoreScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   const { setJourneyState } = userJourneyStore();
+  const { mutateAsync: packageCartMutation, isPending: packageCartLoading } = usePackageCartMutation();
   const { t } = useAppTranslation();
   const twkToken = generateTWKToken();
   const { mutateAsync: verifyTwkToken } = useVerifyTWKToken(twkToken);
@@ -791,7 +793,7 @@ const StoreScreen = () => {
     });
   };
 
-  const handlePaymentPending = () => {
+  const handlePaymentPending = async () => {
     const sku =
       userModeData?.userMode?.firstPackageStatus ===
         FIRST_PACKAGE_STATUS.PENDING
@@ -817,13 +819,26 @@ const StoreScreen = () => {
       }),
       simType,
     });
-    navigation.dispatch(
-              StackActions.replace('reviewPayment', {
-                id: sku || "",
-                type: paymentFor.orderSIM,
-                title: t("label.orderESIM")
-              })
-            );
+
+    try {
+      const response = await packageCartMutation({ package_sku: sku || "" });
+      navigation.dispatch(
+        StackActions.replace("reviewPayment", {
+          id: sku || "",
+          type: paymentFor.orderSIM,
+          title: t("label.orderESIM"),
+          ...(response?.paymentLink && { paymentLink: response.paymentLink }),
+        })
+      );
+    } catch {
+      navigation.dispatch(
+        StackActions.replace("reviewPayment", {
+          id: sku || "",
+          type: paymentFor.orderSIM,
+          title: t("label.orderESIM"),
+        })
+      );
+    }
   };
   const renderItem = (item: ListItemType) => {
     const itemInfo = fetchData(item.key);
@@ -981,7 +996,7 @@ const StoreScreen = () => {
             />
           }
         />
-        <Loader loading={isDeviceLoading} />
+        <Loader loading={isDeviceLoading || packageCartLoading} />
       </View>
     </FadeOnFocusView>
   );

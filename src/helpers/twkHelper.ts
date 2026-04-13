@@ -18,7 +18,9 @@ const decodeJWT = (token: string) => {
 };
 
 export const generateTWKToken = () => {
-    return 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYXRpb25hbElkIjoiMTExMTExMTExMSIsImV4cCI6MTc3NTY1MDQ2OCwiaXNzIjoiVGF3YWtrYWxuYSIsImF1ZCI6Ik1pbmlTZXJ2aWNlMTAwMDMyMDMifQ.AcFpgCHCBT8VAx5KvcAWmJhZN6opHjeahro_Ki-ZHyN_sMezCp3LGCrozmh_wgQfAMR9S-V8uzluMb2frJB6TIH3pQxQpEMhAZR0nrm0y-n7Ux_WUy0gg1tg8SY8xpPa2EXocSQShpBS7oEneWft3Seew4JIEB8L9P17bp9kFvJwmBx9fAVApo121xfY6yfmiX0NkvlGMFiNIYvduQnX_ZRoXRHKp3ZHS4vlAu8RbBJU-qcf4ef5wlB77vBcMj0rfm7Gmvf-D1uPVNkAS1sJKd-O1bIkqr6Xwmwv7I47RE3Q-KxdcwxSjTSs9y0s79jCcglNorED9cKn7XBL2OX0gQ'
+    return 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYXRpb25hbElkIjoiMTExMTExMTExMSIsImV4cCI6MTc3NTgwNzk0MCwiaXNzIjoiVGF3YWtrYWxuYSIsImF1ZCI6Ik1pbmlTZXJ2aWNlMTAwMDMyMDMifQ.GIRT2mB8DlXxWcy_mbq9qqmnuR8A8_evP_OkjIRclU_RYv88o9tgQd9em5V0zKbmx6gjxyg9O8JYbuRIbTonXDU01iSqgzbnlpVSlg86ci83SM6ozMGucQH4l_rpnB8tatWmMXlFfz9bU5r02s7eCHJV9ksZnR433Tw3qs7YAnWzqSDKPLlntzk91M1jkIMuu4I-yjLBAYqr4SsEHklEgh0mBiOa_njtX_T9OzKx4gs5CEkpZctGwLe4TIRbTqOXdRJm5WrZlo8IS-_OdZ1ie1x5WyosR47qLKPCPEe6WzDnfkE6iB9BewD9voy-EpHaV5kk564TfYsZef1ddJMuMg'
+    // return 'eyghbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYXRpb25hbElkIjoiMTExMTExMTExMSIsImV4cCI6MTc3NTgwNzk0MCwiaXNzIjoiVGF3YWtrYWxuYSIsImF1ZCI6Ik1pbmlTZXJ2aWNlMTAwMDMyMDMifQ.GIRT2mB8DlXxWcy_mbq9qqmnuR8A8_evP_OkjIRclU_RYv88o9tgQd9em5V0zKbmx6gjxyg9O8JYbuRIbTonXDU01iSqgzbnlpVSlg86ci83SM6ozMGucQH4l_rpnB8tatWmMXlFfz9bU5r02s7eCHJV9ksZnR433Tw3qs7YAnWzqSDKPLlntzk91M1jkIMuu4I-yjLBAYqr4SsEHklEgh0mBiOa_njtX_T9OzKx4gs5CEkpZctGwLe4TIRbTqOXdRJm5WrZlo8IS-_OdZ1ie1x5WyosR47qLKPCPEe6WzDnfkE6iB9BewD9voy-EpHaV5kk564TfYsZef1ddJMuMg'
+
 }
 
 export const useAutoLogin = () => {
@@ -28,7 +30,8 @@ export const useAutoLogin = () => {
     const { refetch: refetchUserMode } = useUserModeQuery();
   
     const login = async (twkToken: string, userDetails: Omit<ValidateTawakkalnaTokenPayload, 'twkToken'>) => {
-      let appToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNTE0MTA3ZjAtMzMyYy0xMWYxLTk4M2YtMDUxNGFjM2M4ODdjIiwibmFtZSI6InRlc3QifSwiaWF0IjoxNzc1NjQwMDk1LCJleHAiOjE3ODA4MjQwOTV9.Me9zBlbLmcVKaPyYhDMMqZV2upNrcC665ULHMYJ6Uo4';
+      let appToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNDg0MjVjMzAtMzczYy0xMWYxLWIwNTMtMmIyNTljNTViZjJhIiwibmFtZSI6InRlc3QifSwiaWF0IjoxNzc2MDg2NzU2LCJleHAiOjE3ODEyNzA3NTZ9.GMa3bqqsaHfoSQp8ZRtAmrrY1iYbs3Sgt5-HhXSbbiA';
+      // let appToken = '';
   
       try {
         const res = await verifyTWKToken({ twkToken, ...userDetails });

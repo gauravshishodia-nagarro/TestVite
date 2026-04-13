@@ -127,7 +127,7 @@ import {
 } from 'react-native';
 import { APayRequestDataType, ApplePay } from 'react-native-apay';
 import Svg, { Line } from 'react-native-svg';
-import { WebViewNavigation } from 'react-native-webview/lib/WebViewTypes';
+import WebView, { WebViewNavigation } from 'react-native-webview';
 import { useAppTranslation } from '../../hooks/useAppTranslation';
 
 type PaymentRouteParams = {
@@ -135,6 +135,7 @@ type PaymentRouteParams = {
         type: string;
         id: string;
         processAdvancePayment?: boolean;
+        paymentLink?: string;
     };
 };
 
@@ -479,7 +480,7 @@ const Payment: React.FC = () => {
 	// const { type, id, processAdvancePayment = false } = useLocalSearchParams();
     const route = useRoute<RouteProp<PaymentRouteParams, 'Payment'>>();
 
-    const { type, id, processAdvancePayment = false } = route.params || {};
+    const { type, id, processAdvancePayment = false, paymentLink: routePaymentLink } = route.params || {};
 
 	const {
 		paymentFor,
@@ -499,7 +500,7 @@ const Payment: React.FC = () => {
 		emailId,
 		userType,
 	} = useUserPreferenceStore();
-	const { height: windowHeight } = useWindowDimensions();
+	const { height: windowHeight, width: windowWidth } = useWindowDimensions();
 	const maxSheetHeight = windowHeight * 0.9;
 	const [coupon, setCoupon] = useState('');
 	const [isAutoRenewEnabled, setAutoRenewEnabled] = useState(false);
@@ -799,6 +800,7 @@ const Payment: React.FC = () => {
 		if (id && type !== paymentFor.addApps && type !== paymentFor.orderDevice) {
 
 			if (isMultiLineRenewal) return;
+			if (routePaymentLink) return;
 			if (packageCartMutationFiredRef.current || isPackageCartMutating || packageCartLoading || packageCartData) return;
 
 			packageCartMutationFiredRef.current = true;
@@ -2155,6 +2157,43 @@ const Payment: React.FC = () => {
 					// console.log("multilineGroupCartInProgress : ", multilineGroupCartInProgress)
 					// console.log("multilinePaymentInProgress : ", multilinePaymentInProgress)
 					// console.log("isAddApplePayCardPending : ", isAddApplePayCardPending)
+
+	const renderPaymentLink = () => {
+		const paymentLink = routePaymentLink || packageCartData?.paymentLink;
+
+		if (!paymentLink) return null;
+
+		const isMobileWindow = windowWidth < 768;
+
+		return (
+			<View style={{ flex: 1, width: isMobileWindow ? windowWidth : undefined }}>
+				{Platform.OS === 'web' ? (
+					<iframe
+						src={paymentLink}
+						title="Payment"
+						style={{ width: isMobileWindow ? windowWidth : '100%', height: '100%', border: 'none' }}
+						frameBorder="0"
+					/>
+				) : (
+					<WebView
+						source={{ uri: paymentLink }}
+						startInLoadingState
+						javaScriptEnabled
+						domStorageEnabled
+						originWhitelist={['*']}
+					/>
+				)}
+			</View>
+		);
+	};
+
+	if (!routePaymentLink && (packageCartLoading || isPackageCartMutating > 0)) {
+		return <Loader loading />;
+	}
+
+	if (routePaymentLink || (packageCartData?.paymentRedirect && packageCartData?.paymentLink)) {
+		return renderPaymentLink();
+	}
 
 	return (
 		<>
