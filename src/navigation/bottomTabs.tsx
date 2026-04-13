@@ -12,6 +12,7 @@ import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import CustomHeader from "../components/customHeader";
 import CustomText from "../components/customText";
 import StoreScreen from "../pages/store";
+import SettingsScreen from "../pages/settings";
 
 const Tab = createBottomTabNavigator();
 
@@ -195,7 +196,7 @@ export default function BottomTabs() {
         .map((tab) => (
           <Tab.Screen
             key={tab.name}
-            component={StoreScreen}
+            component={tab.name === 'settings' ? SettingsScreen : StoreScreen}
             name={tab.name}
             options={{
               title: t(tab.title),
