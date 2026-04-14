@@ -6,6 +6,7 @@ import MobileNumberVerificationSheet from "../sheets/mobileNumberVerificationShe
 import OtpBottomSheet from "../sheets/otpBottomSheet";
 import AddCardSheet from "../sheets/addCardSheet";
 import ShowCardSheet from "../sheets/showCardsSheet";
+import LanguageSelectionSheet from "../sheets/languageSelectionSheet";
 
 
 export const bottomSheets = {
@@ -17,4 +18,5 @@ export const bottomSheets = {
   otpBottomSheet: OtpBottomSheet,
   showCardSheet: ShowCardSheet,
   addCardSheet: AddCardSheet,
+  languageSelectionSheet: LanguageSelectionSheet,
 };

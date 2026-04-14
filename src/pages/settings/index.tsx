@@ -4,40 +4,53 @@ import FadeOnFocusView from '../../components/fadeOnFocusView';
 import Section from '../../components/section';
 import SectionItem from '../../components/sectionItem';
 import constants from '../../configs/constants';
-import { useLanguageToggle } from '../../hooks/useLanguageToggle';
 import { useAppTranslation } from '../../hooks/useAppTranslation';
 import { useUserPreferenceStore } from '../../stores/userPreferencesStore';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { useBottomSheetStore } from '../../stores/useBottomSheetStore';
 
 const AppPreferences = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const [isLanguageButtonClicked, setIsLanguageButtonClicked] = useState(false);
-  const { toggleLanguage } = useLanguageToggle();
   const { t } = useAppTranslation();
   const { language } = useUserPreferenceStore();
+  const { setActiveSheet } = useBottomSheetStore();
+  const { fontPrimaryRegular } = constants;
+  const navigation = useNavigation();
 
-  const onLanguageChange = async () => {
-    setIsLanguageButtonClicked(true);
-    await toggleLanguage();
+  const onLanguageChange = () => {
+    setActiveSheet('languageSelectionSheet', { enableDynamicSizing: true, snapPoints: undefined });
   };
+
+  const onPressAppPreferences = () => {
+    navigation.navigate('appPreferences' as never);
+  }
 
   return (
     <Section
-      label={t('label.appSettings')}
+      label={'General Settings'}
       containerClassName="!mt-4"
-      labelClassName="!text-base"
+      labelClassName={`!text-xs text-shades-gray-03 ${fontPrimaryRegular}`}
     >
       <SectionItem
+        leadingIcon="/images/app_preferences.webp"
+        label={'App Preferences'}
+        imageWidth='w-[26px]'
+        imageHeight='h-[26px]'
+        containerClassName="!py-0 !mt-6"
+        dividerClassName="!mt-4"
+        onPress={onPressAppPreferences}
+      />
+
+      {/* <SectionItem
         leadingIcon="changeLanguage"
         label={t('action.changelanguage')}
         trailingText={language === 'ar' ? 'العربية' : 'English'}
         showSperator
         containerClassName="!py-0 !mt-6"
         dividerClassName="!mt-4"
-        disableRowPress={isLanguageButtonClicked}
         onPress={onLanguageChange}
-      />
-      <SectionItem
+      /> */}
+      {/* <SectionItem
         leadingIcon="notification2"
         label={t('label.notifications')}
         trailingSwitch
@@ -45,7 +58,7 @@ const AppPreferences = () => {
         onTrailingSwitchPress={(value) => setNotificationsEnabled(value)}
         containerClassName="!py-0 !mt-4"
         showFallabackArrow={false}
-      />
+      /> */}
     </Section>
   );
 };
@@ -53,12 +66,14 @@ const AppPreferences = () => {
 const HelpAndSupport = () => {
   const { t } = useAppTranslation();
   const navigation = useNavigation<NavigationProp<any>>();
+  const { fontPrimaryRegular } = constants;
+
 
   return (
     <Section
-      label={t('label.needHelp')}
+      label={t('label.helpAndSupport')}
       containerClassName="!mt-4"
-      labelClassName="!text-base"
+      labelClassName={`!text-xs text-shades-gray-03 ${fontPrimaryRegular}`}
     >
       <SectionItem
         leadingIcon="faq"

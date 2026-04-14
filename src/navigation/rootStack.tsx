@@ -16,6 +16,7 @@ import CustomText from "../components/customText";
 import ReviewOrder from "../pages/store/review-order";
 import ReviewPayment from "../pages/payment/review-payment";
 import SuccessScreen from "../pages/payment/success";
+import AppPreferencesScreen from "../pages/settings/appPreferences";
 import ThreeDSecureView from "../pages/payment/three-d-secure";
 import { useAppTranslation } from "../hooks/useAppTranslation";
 import { generateTWKToken, useAutoLogin } from "../helpers/twkHelper";
@@ -169,6 +170,10 @@ const headerMap: Record<
   },
   emailVerification: {
     titleKey: "action.verifyYourEmail",
+  },
+  appPreferences: {
+    titleKey: "label.appPreferences",
+    showLeadingIcon: true,
   },
 };
 
@@ -331,6 +336,14 @@ export default function RootStack() {
         <Stack.Screen
           name={"languageSelection"}
           component={LanguageSelection}
+        />
+        <Stack.Screen
+          name={"appPreferences"}
+          component={AppPreferencesScreen}
+          options={({ route }) => ({
+            headerShown: true,
+            header: () => <ShowHeader routeName={route.name} />,
+          })}
         />
       <Stack.Screen
           name={"SuccessScreen"}
