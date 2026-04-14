@@ -30,7 +30,7 @@ export const useAutoLogin = () => {
     const { refetch: refetchUserMode } = useUserModeQuery();
   
     const login = async (twkToken: string, userDetails: Omit<ValidateTawakkalnaTokenPayload, 'twkToken'>) => {
-      let appToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNDg0MjVjMzAtMzczYy0xMWYxLWIwNTMtMmIyNTljNTViZjJhIiwibmFtZSI6InRlc3QifSwiaWF0IjoxNzc2MDg2NzU2LCJleHAiOjE3ODEyNzA3NTZ9.GMa3bqqsaHfoSQp8ZRtAmrrY1iYbs3Sgt5-HhXSbbiA';
+      let appToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMWM5Y2Q0ZTAtMzc0NC0xMWYxLWIwNTMtMmIyNTljNTViZjJhIiwibmFtZSI6InNkamZramFkZmprYWYifSwiaWF0IjoxNzc2MDkwMTE5LCJleHAiOjE3ODEyNzQxMTl9.0S-jQOg3-CPgRbFKnkeYkkPb8V0gzOH6GNp52lJcOk0';
       // let appToken = '';
   
       try {
