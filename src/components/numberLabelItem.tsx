@@ -41,14 +41,14 @@ const NumberLabelItem: React.FC<NumberLabelItemProps> = ({
         const label = labelKey ? item[labelKey] : item;
         return (
           <View key={index} className={"flex-row gap-[10px] w-full"}>
-            <View className="items-center">
+            <View className="items-center" style={{ alignSelf: 'stretch' }}>
               <View
                 className={`rounded-full justify-center items-center border-shades-gray-06 border-[1px] w-[32px] h-[32px] ${numberViewClassName}`}
               >
                 <CustomText
                   style={{
                     includeFontPadding: false,
-                    textAlignVertical: "center", // added this style as a Text was not coming at cneter on Android platform
+                    textAlignVertical: "center",
                   }}
                   className={`text-xs text-shades-gray-01 ${numberFontName} ${numberClassName}`}
                 >
@@ -56,7 +56,7 @@ const NumberLabelItem: React.FC<NumberLabelItemProps> = ({
                 </CustomText>
               </View>
               {list?.length > 1 && index < list?.length - 1 && (
-                <View className="h-[32px] bg-shades-gray-06 w-[1px] self-center flex-grow" />
+                <View style={{ flex: 1, width: 1, backgroundColor: 'rgb(230, 230, 230)' }} />
               )}
             </View>
             <CustomText

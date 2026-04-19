@@ -39,26 +39,7 @@ const AppPreferences = () => {
         containerClassName="!py-0 !mt-6"
         dividerClassName="!mt-4"
         onPress={onPressAppPreferences}
-      />
-
-      {/* <SectionItem
-        leadingIcon="changeLanguage"
-        label={t('action.changelanguage')}
-        trailingText={language === 'ar' ? 'العربية' : 'English'}
-        showSperator
-        containerClassName="!py-0 !mt-6"
-        dividerClassName="!mt-4"
-        onPress={onLanguageChange}
-      /> */}
-      {/* <SectionItem
-        leadingIcon="notification2"
-        label={t('label.notifications')}
-        trailingSwitch
-        isSwitchOn={notificationsEnabled}
-        onTrailingSwitchPress={(value) => setNotificationsEnabled(value)}
-        containerClassName="!py-0 !mt-4"
-        showFallabackArrow={false}
-      /> */}
+      />;
     </Section>
   );
 };

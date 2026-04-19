@@ -18,7 +18,8 @@ const decodeJWT = (token: string) => {
 };
 
 export const generateTWKToken = () => {
-    return 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYXRpb25hbElkIjoiMTExMTExMTExMSIsImV4cCI6MTc3NjI0MjYzMCwiaXNzIjoiVGF3YWtrYWxuYSIsImF1ZCI6Ik1pbmlTZXJ2aWNlMTAwMDMyMDMifQ.ZWiblNU9R8vVLAoq-tQV0cQZFKmhhQaAsg6uwejphD7aAgOCDT-fRunUXOhzVzsYIB9AbCoJhqGvIuZp44L26smShYZzPydzLltey_KF1WczvIe39h7eY7jNSYkgP53a2wvXNQXjIOpgGVdkR618oOqoSPpTpZy_H1g26qXgxLdSnNL7U7-4hGycROXmHB8e1mwvRvHq8CGiYU1NQpoN_cQC3Xrobm9giFjbpfd9ZQOxUEAqDGwHb-f8gJSvAZcUJxFnds2CvvkezF1Hzk0q6JJzEu1CS8bCpouEAdXcTmHYTBgOk4IoBC8CCEFnkOuqetL5rmYYLo50n0sC6HceFg'
+        return 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYXRpb25hbElkIjoiMTExMTExMTExMSIsImV4cCI6MTc3NjY3MzkxMiwiaXNzIjoiVGF3YWtrYWxuYSIsImF1ZCI6Ik1pbmlTZXJ2aWNlMTAwMDMyMDMifQ.cVN3eRPov5Mf__zNerKDYbZFo_aGaJ5qqTxRMcRE0SVqELt7YJDDWt2leaqXkVil8ZKEZ1AcARVF_rXcZ40lxpSdFrs2ND3Ff5my0WpeEp354YCeceYitBbSp19N0gCQ6FZJpuInB0q53aS8aDEPRtXPUFU-hMtn8rUzsWJwJkIkxAt7oKTKrjpuGBVVAO3f9nKO0-yzYWpVOwyRqLQQKhLBCIDzi922PbBl2sScHc-HuFTVCwkfsm3jzPs2adRaiCSlVisoi7VQjvhWc3PKt5CzDUd-gJu9Tv4zCXgqFp5tjfX9LVMJ7cSNh_wuDR2RZ2IcetXl2RNhlk2PeOkHEw'
+
 }
 
 export const useAutoLogin = () => {
@@ -28,7 +29,7 @@ export const useAutoLogin = () => {
     const { refetch: refetchUserMode } = useUserModeQuery();
   
     const login = async (twkToken: string, userDetails: Omit<ValidateTawakkalnaTokenPayload, 'twkToken'>) => {
-      let appToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMWM5Y2Q0ZTAtMzc0NC0xMWYxLWIwNTMtMmIyNTljNTViZjJhIiwibmFtZSI6InNkamZramFkZmprYWYifSwiaWF0IjoxNzc2MDkwMTE5LCJleHAiOjE3ODEyNzQxMTl9.0S-jQOg3-CPgRbFKnkeYkkPb8V0gzOH6GNp52lJcOk0';
+      let appToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiY2NhNTk2MDAtMzhjNi0xMWYxLTg2NmQtMTNiYzhiY2FjZGJlIiwibmFtZSI6InNkZmRzZmRzZmRzZiJ9LCJpYXQiOjE3NzYyNTYxOTMsImV4cCI6MTc4MTQ0MDE5M30.yFfhs9xVhu_en8jT_CrulKFQbI-13kS067MLx42mPNQ';
       // let appToken = '';
   
       try {

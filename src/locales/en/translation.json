@@ -321,6 +321,7 @@
     "yesSure": "Yes, I’m sure",
     "savePreferences": "Save Preferences",
     "saveChanges": "Save changes",
+    "backToHome": "Back to Home",
     "trackOrder": "Track Order",
     "chooseNewNumber": "Choose new number",
     "confirmDeliveryLoc": "Confirm delivery location",
@@ -410,7 +411,8 @@
     "rescheduleDateTime": "Reschedule Date & Time",
     "updateDeliveryAddress": "Update delivery address",
     "saveAndSubscribe": "Save & Subscribe to Auto renewal",
-    "save": "Save"
+    "save": "Save",
+    "gotIt": "Got it!"
   },
   "label": {
     "email": "Email",
@@ -429,6 +431,8 @@
     "englishSubLabel": "Welcome! Experience Yaqoot with us",
     "arabicSubLabel": "أهلاً وسهلاً! اختبروا ياقوت معنا.",
     "appPreferences": "App Preferences",
+    "downloadAppToUseFeature": "Download YAQOOT App to use this Feature!",
+    "downloadAppSubtitle": "Enjoy and experience more by downloading the Yaqoot app from your favorite store",
     "makeYourPreferences": "Make your preferences",
     "setPreferencesSubtitle": "Set your preferences for language and Notification",
     "preferredLanguage": "Preferred language",
@@ -670,6 +674,11 @@
     "holdSimCard": "Please hold the Sim Card in the frame",
     "scanSIM": "Scan SIM Card",
     "activateeSIM": "Activate your eSIM",
+    "checkDetailsForESIM": "Check the below details to proceed with activating your eSIM",
+    "followStepsToActivate": "Follow below step to activate",
+    "esimActivateStep1": "Download Yaqoot from App store or Play store",
+    "esimActivateStep2": "Login in to Yaqoot account",
+    "esimActivateStep3": "You can see an activation card in home page and continue activating your eSIM",
     "infoMismatch": "Information Mismatch",
     "infoMismatchMessage": "The information you’ve entered doesn’t match your Absher account. Please update your Details to proceed with activation",
     "absherVerificationInstruction": "Verify your information using Absher. If you don’t have the app, you can download it from the",

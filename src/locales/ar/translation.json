@@ -309,6 +309,7 @@
     "yesSure": "Yes, I’m sure",
     "savePreferences": "Save Preferences",
     "saveChanges": "حفظ التغييرات",
+    "backToHome": "العودة للرئيسية",
     "tryChangeLocation": "Try changing location",
     "trackOrder": "Track Order",
     "chooseNewNumber": "اختار رقم جديد",
@@ -395,7 +396,8 @@
     "rescheduleDateTime": "Reschedule Date & Time",
     "updateDeliveryAddress": "Update delivery address",
     "saveAndSubscribe": "Save & Subscribe to Auto renewal",
-    "save": "Save"
+    "save": "Save",
+    "gotIt": "حسناً!"
   },
   "label": {
     "email": "الإيميل",
@@ -406,6 +408,8 @@
     "englishSubLabel": "أهلاً وسهلاً! تجربة ياقوت معنا.",
     "arabicSubLabel": "أهلاً وسهلاً! اختبروا ياقوت معنا.",
     "appPreferences": "تفضيلات التطبيق",
+    "downloadAppToUseFeature": "حمّل تطبيق ياقوت لاستخدام هذه الميزة!",
+    "downloadAppSubtitle": "استمتع بتجربة أكثر من خلال تحميل تطبيق ياقوت من متجرك المفضل",
     "makeYourPreferences": "اضبط تفضيلاتك",
     "setPreferencesSubtitle": "اضبط تفضيلاتك للغة والإشعارات",
     "preferredLanguage": "اللغة المفضلة",
@@ -662,6 +666,11 @@
     "codeExpired": "Code expired",
     "nafathVerificationIncomplete": "Verification is incomplete. Please retry Nafath to complete the process",
     "activateeSIMMessage": "Proceed with activation to enjoy yaqoot service",
+    "checkDetailsForESIM": "تحقق من التفاصيل أدناه للمتابعة في تفعيل شريحة eSIM",
+    "followStepsToActivate": "اتبع الخطوات التالية للتفعيل",
+    "esimActivateStep1": "حمّل تطبيق ياقوت من App Store أو Play Store",
+    "esimActivateStep2": "سجّل الدخول إلى حساب ياقوت",
+    "esimActivateStep3": "يمكنك رؤية بطاقة التفعيل في الصفحة الرئيسية ومتابعة تفعيل شريحة eSIM",
     "continuePay": "Continue to Pay",
     "continuePayMessage": "Your package is processed, continue the payment to enjoy the service",
     "limitExceeded": "تجاوزت الحد المسموح",

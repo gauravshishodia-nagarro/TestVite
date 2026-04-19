@@ -1,6 +1,6 @@
 import { useGetOrderDetailsQuery } from '../../apis/services/delivery';
 import { usePayment } from '../../apis/services/payment';
-import { useGetSimOrderCartQuery } from '../../apis/services/telcoProvision';
+import { useGetSimOrderCartQuery, usePackageCartMutation } from '../../apis/services/telcoProvision';
 import { PackageType } from '../../apis/types/store';
 import AppsIcon from '../../components/appsIcon';
 import CardFeatureItem from '../../components/cardFeatureItem';
@@ -196,6 +196,8 @@ const ConfirmOrder: React.FC = () => {
 	const { isPending: isPaymentLoading, mutateAsync: paymentMutation } =
 		usePayment();
 
+	const { isPending: isPackageCartLoading, mutateAsync: packageCartMutation } = usePackageCartMutation();
+
 	const _selectedPackage =
 		simType === SIM_TYPE.ESIM
 			? (selectedPackage?.esimPackage ?? selectedPackage)
@@ -230,27 +232,40 @@ const ConfirmOrder: React.FC = () => {
 		});
 	}, [orderDetailData?.requestedMsisdn]);
 
-	const handleConfirmOrder = () => {
-		paymentMutation({
+	const handleConfirmOrder = async () => {
+		await paymentMutation({
 			orderId: simOrderCartData?.orderId || '',
 			email: email,
 			paymentOptionFlag: 'FREE',
-		}).then(() => {
-			if (orderDetailData?.payBeforeActivation) {
-				switchToNewLine(queryClient);
-				//TODO: navigate to payment screen with order id and amount
+		});
 
+		if (orderDetailData?.payBeforeActivation) {
+			switchToNewLine(queryClient);
+			const sku = _selectedPackage?.sku || '';
+			const title = getScreenTitle({ journeyName, simType, t });
+			try {
+				const cartResponse = await packageCartMutation({ package_sku: sku });
 				navigation.dispatch(
 					StackActions.replace('reviewPayment', {
-						id: _selectedPackage?.sku || '',
+						id: sku,
 						type: paymentFor.orderSIM,
-						title: getScreenTitle({ journeyName, simType, t }),
+						title,
+						...(cartResponse?.paymentLink && { paymentLink: cartResponse.paymentLink }),
 					})
 				);
-			} else {
-				replaceTelcoTokenWithChild();
-				if (simType === SIM_TYPE.PHYSICAL) {
-					navigation.dispatch(
+			} catch {
+				navigation.dispatch(
+					StackActions.replace('reviewPayment', {
+						id: sku,
+						type: paymentFor.orderSIM,
+						title,
+					})
+				);
+			}
+		} else {
+			replaceTelcoTokenWithChild();
+			if (simType === SIM_TYPE.PHYSICAL) {
+				navigation.dispatch(
 					StackActions.replace('success', {
 						type: successFlowType.orderSIM,
 						address: orderDetailData?.address || '',
@@ -267,15 +282,14 @@ const ConfirmOrder: React.FC = () => {
 						customerName: name || '',
 					})
 				);
-				} else {
-					navigation.dispatch(
+			} else {
+				navigation.dispatch(
 					StackActions.replace('Success', {
 						type: successFlowType.orderPaymet
 					})
 				);
-				}
 			}
-		});
+		}
 		// .catch((error) => {
 		// 	alert(error?.message);
 		// });
@@ -468,7 +482,7 @@ const ConfirmOrder: React.FC = () => {
 			</View>
 			<Loader
 				loading={
-					isSimOrderCartLoading || isPaymentLoading || isOrderDetailsLoading
+					isSimOrderCartLoading || isPaymentLoading || isOrderDetailsLoading || isPackageCartLoading
 				}
 			/>
 		</>

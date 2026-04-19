@@ -34,6 +34,7 @@ import {
 } from "../../stores/useBottomSheetStore";
 import { userJourneyStore } from "../../stores/userJourneyStore";
 import { useUserPreferenceStore } from "../../stores/userPreferencesStore";
+import { useUpcomingFeatureStore } from "../../stores/useUpcomingFeatureStore";
 import {
   FIRST_PACKAGE_STATUS,
   HOME_CARDS_ACTION,
@@ -406,11 +407,16 @@ const PackagesSection = () => {
   const { userTypes } = constants;
   const { resetJourneyState } = userJourneyStore();
   const { t } = useAppTranslation();
+  const showUpcomingFeature = useUpcomingFeatureStore((s) => s.show);
 
   const handleInfoCardPress = () => {
     resetJourneyState();
     //TODO: stack required
     navigation.navigate("Packages");
+  };
+
+  const handleUpcomingFeaturePress = () => {
+    showUpcomingFeature();
   };
 
   return (
@@ -439,7 +445,7 @@ const PackagesSection = () => {
           <InfoCard
             icon={"dataPackage"}
             title={t("common.dataPackages")}
-            onPress={handleInfoCardPress}
+            onPress={handleUpcomingFeaturePress}
             mainContainerClassName="flex-1"
             colors={[
               GradientColors.purpleGradient[theme].secondryPurple,
@@ -457,7 +463,7 @@ const PackagesSection = () => {
           <InfoCard
             icon={"internationalPackage"}
             title={t("common.visitPackages")}
-            onPress={handleInfoCardPress}
+            onPress={handleUpcomingFeaturePress}
             mainContainerClassName="flex-1"
             colors={[
               GradientColors.blueGradient[theme].secondryBlue,
@@ -473,7 +479,7 @@ const PackagesSection = () => {
           <InfoCard
             icon={"bundlePackage"}
             title={t("common.homePackages")}
-            onPress={handleInfoCardPress}
+            onPress={handleUpcomingFeaturePress}
             mainContainerClassName="flex-1"
             colors={[
               GradientColors.greenGradient[theme].secondryGreen,
@@ -708,19 +714,35 @@ const StoreScreen = () => {
         ? SIM_TYPE.PHYSICAL
         : SIM_TYPE.ESIM;
 
-    openBottomSheet("activateSimSheet", {
-      props: {
-        verifyWith: userModeData?.userMode?.idValue
-          ? "NATIONAL_ID"
-          : "PASSPORT",
-        simType: simType,
-        msisdn: userModeData?.orderJourney?.msisdn,
-        idValue: userModeData?.userMode?.idValue,
-        selectedPackage: selectedPackage,
-        msisdnTransitionType: userModeData?.orderJourney?.msisdnTransitionType,
-      } as ActivateSimSheetProps,
-      snapPoints: ["65%"],
-    });
+    const msisdn = userModeData?.orderJourney?.msisdn;
+    const activateSimSheetProps: ActivateSimSheetProps = {
+      verifyWith: userModeData?.userMode?.idValue ? "NATIONAL_ID" : "PASSPORT",
+      simType,
+      msisdn,
+      idValue: userModeData?.userMode?.idValue,
+      selectedPackage,
+      msisdnTransitionType: userModeData?.orderJourney?.msisdnTransitionType,
+    };
+
+    if (simType === SIM_TYPE.ESIM) {
+      openBottomSheet("activateESIMInfoSheet", {
+        snapPoints: ["80%"],
+        props: {
+          msisdn,
+          selectedPackage,
+          onGotIt: () =>
+            openBottomSheet("activateSimSheet", {
+              props: activateSimSheetProps,
+              snapPoints: ["65%"],
+            }),
+        },
+      });
+    } else {
+      openBottomSheet("activateSimSheet", {
+        props: activateSimSheetProps,
+        snapPoints: ["65%"],
+      });
+    }
   };
   const handleActionPress = (key: string) => {
     // if (type === 'action.continuePayment') {

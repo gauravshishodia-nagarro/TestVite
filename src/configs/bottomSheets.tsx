@@ -7,6 +7,7 @@ import OtpBottomSheet from "../sheets/otpBottomSheet";
 import AddCardSheet from "../sheets/addCardSheet";
 import ShowCardSheet from "../sheets/showCardsSheet";
 import LanguageSelectionSheet from "../sheets/languageSelectionSheet";
+import ActivateESIMInfoSheet from "../sheets/activateESIMInfoSheet";
 
 
 export const bottomSheets = {
@@ -19,4 +20,5 @@ export const bottomSheets = {
   showCardSheet: ShowCardSheet,
   addCardSheet: AddCardSheet,
   languageSelectionSheet: LanguageSelectionSheet,
+  activateESIMInfoSheet: ActivateESIMInfoSheet,
 };

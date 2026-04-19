@@ -190,6 +190,7 @@ const PersonalInformation: React.FC = () => {
         isPending: verifyShipmentOTPLoading,
     } = useVerifyShipmentMutation();
 
+
     const isFocused = useIsFocused();
     const hasFetched = useRef(false);
     const hasGuestEnteredTelcoNumberRef = useRef(false);
@@ -860,31 +861,19 @@ const PersonalInformation: React.FC = () => {
             navigation.dispatch(
                 StackActions.replace('/delivery/delivery-location')
             );
-            // router.navigate({
-            // 	pathname: '/delivery/delivery-information',
-            // 	params: {
-            // 		title:
-            // 			// journeyName === 'SWITCH_NUMBER'
-            // 			// 	? t('action.transferYaqoot')
-            // 			// 	: t('action.orderSIM'),
-            // 			getScreenTitle({ journeyName, simType }),
-            // 	},
-            // });
         } else {
-            // for esim we do not show the delivery page
-            if (_userType === 'NON_TELCO') {
-                // for non telco, do not call the post sim order API
+            // for esim: navigate to review order screen which handles cart API + payment
+            const title = getScreenTitle({ journeyName, simType, t });
+            const navigateToReview = () => {
                 navigation.dispatch(
-                    StackActions.replace(
-                        'reviewOrder',
-                        {
-                            title: getScreenTitle({
-                                journeyName,
-                                simType: simType,
-                                t: t,
-                            }),
-                        },
-                    ));
+                    StackActions.replace('reviewOrder', {
+                        title,
+                    }),
+                );
+            };
+
+            if (_userType === 'NON_TELCO') {
+                navigateToReview();
             } else {
                 postSimOrder({
                     orderType: ONBOARDING_JOURNEY_TYPES.ESIM,
@@ -894,19 +883,8 @@ const PersonalInformation: React.FC = () => {
                     ),
                     ...(_userType === 'GUEST' && { isGuestPortIn: true }),
                 }).then(() => {
-                    navigation.dispatch(
-                        StackActions.replace(
-                            'reviewOrder',
-                            {
-                                title: getScreenTitle({
-                                    journeyName,
-                                    simType: simType,
-                                    t: t,
-                                }),
-                            },
-                        ));
+                    navigateToReview();
                 });
-                // .catch((error) => alert(error?.message));
             }
         }
     };
@@ -977,7 +955,7 @@ const PersonalInformation: React.FC = () => {
                                 isValidated={isValidated()}
                                 isPhoneOptional={isPhoneOptional}
                                 isPhoneDisbale={
-                                    form.phoneNumber.length > 0 &&
+                                    form.phoneNumber.length === 10 &&
                                     journeyName === 'ORDER_SIM' &&
                                     useUserPreferenceStore.getState().userType === 'NON_TELCO'
                                 }

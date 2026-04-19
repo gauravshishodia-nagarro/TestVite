@@ -6,6 +6,7 @@ import BottomTabs from "./bottomTabs";
 import LanguageSelection from "../pages/languageSelection";
 import { useUserNavigationStore } from "../stores/userNavigationStore";
 import CustomBottomSheet from "../components/bottomSheet";
+import UpcomingFeatureOverlay from "../components/upcomingFeatureOverlay";
 import Packages from "../pages/store/packages";
 import PersonalInformation from "../pages/store/personal-information";
 import BasicHeader from "../components/basicHeader";
@@ -249,8 +250,8 @@ export default function RootStack() {
   React.useEffect(() => {
     login(generateTWKToken(), {
       full_name: 'Tawakkalna User',
-      mobile_number: '+966533978910',
-      email: 'fjrjfnsoapnmalammLJNNN@sksk.com',
+      mobile_number: '+966533978911',
+      email: 'fjrjfnsoapnmalammLJNdhdh@sksk.com',
       language: 'en',
     });
   }, []);
@@ -360,6 +361,7 @@ export default function RootStack() {
         />
       </Stack.Navigator>
       <CustomBottomSheet />
+      <UpcomingFeatureOverlay />
     </View>
   );
 }

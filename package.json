@@ -11,6 +11,7 @@
     "prod": "vite build",
     "preview": "vite preview",
     "dev": "vite",
+    "build": "vite build && rm -f app.zip && cd dist && zip -r ../app.zip . -x '*.DS_Store' && cd ..",
     "nuke": "rm -rf dist && rm -rf .expo && rm -rf node_modules && yarn cache clean"
   },
   "dependencies": {
